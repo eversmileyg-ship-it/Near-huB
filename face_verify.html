@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မျက်နှာ အတည်ပြုခြင်း - NearHuB (UI Only)</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="module">
+        import { createIcons, Camera, Loader, Check, ShieldCheck, Smile, ChevronLeft } 
+        from "https://cdn.skypack.dev/lucide?dts";
+        window.createIcons = createIcons;
+        window.lucide = { Camera, Loader, Check, ShieldCheck, Smile, ChevronLeft };
+    </script>
+
+    <style>
+        body {
+            background-color: #0d1117;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: auto;
+            min-height: 100vh;
+            background: #161b22;
+            padding-bottom: 40px;
+        }
+
+        .glass {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+        }
+
+        #face-frame {
+            width: 80%;
+            height: 80%;
+            border: 3px dashed #f59e0b;
+            border-radius: 50%;
+            animation: glow 1.5s infinite;
+        }
+
+        @keyframes glow {
+            0% { border-color: rgba(245,158,11,0.4); }
+            50% { border-color: rgba(245,158,11,1); }
+            100% { border-color: rgba(245,158,11,0.4); }
+        }
+    </style>
+</head>
+
+<body>
+<div id="container" class="p-6 relative">
+
+    <!-- Back -->
+    <button onclick="history.back()" 
+            class="absolute top-6 left-6 p-2 rounded-full hover:bg-white/10 text-gray-300">
+        <i data-lucide="ChevronLeft" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Header -->
+    <h1 class="text-3xl font-bold text-amber-400 mt-10 text-center">
+        မျက်နှာ အတည်ပြုခြင်း
+    </h1>
+    <p class="text-center text-gray-400 mt-2 text-sm">
+        NRC ပုံနှင့် မျက်နှာကို ကိုက်ညီမှု စစ်ဆေးနေသည်
+    </p>
+
+    <!-- Instruction card -->
+    <div class="glass p-4 mt-6 flex space-x-3">
+        <i data-lucide="Smile" class="w-6 h-6 text-blue-300"></i>
+        <div class="text-blue-300 text-sm space-y-1">
+            <p>• အလင်းကောင်းသောနေရာတွင်နေပါ</p>
+            <p>• မျက်နှာကို Frame အတွင်းထားပါ</p>
+            <p>• ဦးထုပ်/မျက်နှာဖုံးများ ခဏချွတ်ပါ</p>
+        </div>
+    </div>
+
+    <!-- Camera Mock -->
+    <div class="mt-8 flex justify-center">
+        <div class="w-72 h-72 flex items-center justify-center rounded-full"
+             style="background:#0d1117; box-shadow:0 0 0 15px rgba(245,158,11,0.1);">
+            <div id="face-frame"
+                 class="flex flex-col items-center justify-center text-center p-6">
+                <i data-lucide="Smile" class="w-10 h-10 text-gray-400 mb-2"></i>
+                <p class="text-white text-sm">မျက်နှာကို ဤနေရာတွင်ထားပါ</p>
+                <p class="text-gray-500 text-xs mt-1">Camera Simulated</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status -->
+    <div id="status" class="text-center mt-6 text-gray-400 min-h-6">
+        စစ်ဆေးရန် အောက်ပါ ခလုတ်ကိုနှိပ်ပါ
+    </div>
+
+    <!-- Button -->
+    <button id="verifyBtn"
+            class="btn-primary bg-amber-500 text-black font-bold text-lg w-full py-3 rounded-xl mt-8 flex justify-center items-center space-x-2">
+        <i data-lucide="Camera" class="w-6 h-6"></i>
+        <span>စစ်ဆေးခြင်း စတင်မည်</span>
+    </button>
+
+</div>
+
+<script>
+    window.onload = () => window.createIcons();
+
+    const btn = document.getElementById("verifyBtn");
+    const status = document.getElementById("status");
+    const faceFrame = document.getElementById("face-frame");
+
+    btn.addEventListener("click", () => {
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="Loader" class="w-6 h-6 animate-spin"></i> <span>စစ်ဆေးနေပါသည်...</span>`;
+        status.innerHTML = `<span class="text-yellow-400">မျက်နှာ ကိုက်ညီမှု စစ်ဆေးနေသည်...</span>`;
+        faceFrame.style.animation = "none";
+        window.createIcons();
+
+        // Simulating 4 sec verification
+        setTimeout(() => {
+            status.innerHTML = `
+                <span class="text-green-400 font-bold flex justify-center items-center space-x-2">
+                    <i data-lucide="ShieldCheck" class="w-5 h-5"></i>
+                    <span>အောင်မြင်ပါသည်</span>
+                </span>
+            `;
+
+            btn.innerHTML = `<i data-lucide="Check" class="w-6 h-6"></i> <span>Dashboard သို့ ဆက်သွားမည်</span>`;
+            btn.style.backgroundColor = "#22c55e"; /* green */
+            btn.style.color = "white";
+            window.createIcons();
+
+            btn.disabled = false;
+
+            btn.onclick = () => {
+                window.location.href = "dashboard.html";
+            };
+
+        }, 4000);
+    });
+</script>
+
+</body>
+</html>
