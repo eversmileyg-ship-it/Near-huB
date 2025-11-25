@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Login / Sign Up (UI Only)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#4F46E5',
+                        'primary-dark': '#4338CA',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Background */
+        body {
+            background-color: #F5F5F5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Input */
+        .app-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB; 
+            background-color: #FFFFFF;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .app-input:focus {
+            border-color: #4F46E5; 
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); 
+            outline: none;
+        }
+        
+        /* Glass card */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 
+                        0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Login button */
+        .btn-login {
+            background-color: #E5E7EB; /* gray-200 */
+            color: #1F2937;
+        }
+        .btn-login:hover {
+            background-color: #D1D5DB; /* gray-300 */
+        }
+
+        /* Sign up button */
+        .btn-signup {
+            background-color: #F3F4F6; /* gray-100 */
+            color: #4B5563;
+        }
+        .btn-signup:hover {
+            background-color: #E5E7EB; /* gray-200 */
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Login Card Container -->
+    <div id="login-container" class="glass-card w-full max-w-sm p-6 sm:p-8 rounded-xl">
+        <div class="text-center">
+            <!-- Logo -->
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+            </div>
+            
+            <h1 class="mt-4 text-2xl font-bold text-gray-900">Access Your Account</h1>
+            <p class="mt-2 text-sm text-gray-600">
+                Enter your phone number to continue.
+            </p>
+        </div>
+
+        <form id="login-form" class="mt-8 space-y-4">
+            <!-- Phone Number Input -->
+            <div>
+                <label for="phone-number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <div class="mt-1">
+                    <input id="phone-number" name="phone-number" type="tel" autocomplete="tel" required
+                        class="app-input text-lg tracking-wider" placeholder="+95 9 XXXXXXXX">
+                </div>
+            </div>
+            
+            <!-- Message Box -->
+            <div id="message-box" class="text-center p-3 rounded-lg hidden text-sm font-medium" role="alert"></div>
+
+            <!-- Login Button -->
+            <button type="submit" id="login-button"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-lg font-medium transition duration-150 ease-in-out btn-login">
+                Login
+            </button>
+            
+            <!-- Sign Up Button -->
+            <button type="button" id="sign-up-button"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-lg font-medium transition duration-150 ease-in-out btn-signup">
+                Sign Up
+            </button>
+        </form>
+
+        <!-- Trust/Verification Section -->
+        <div class="mt-8 pt-4 border-t border-gray-200/50 text-center space-y-2">
+            <p class="text-xs font-semibold text-gray-700 leading-relaxed">
+                Your account is protected with <br class="sm:hidden"/>
+                <span class="text-gray-700 font-extrabold tracking-tight">
+                    ID + Phone + Face Verification
+                </span>
+            </p>
+            <p class="text-xs text-gray-600 font-bold uppercase tracking-widest">
+                VERIFIED USERS ONLY MARKETPLACE
+            </p>
+        </div>
+        
+        <!-- Watermark/Branding -->
+        <div class="mt-6 text-center">
+            <p class="text-xs text-gray-500 font-semibold tracking-widest uppercase opacity-70">
+                Powered by Near HuB
+            </p>
+        </div>
+    </div>
+
+    <!-- UI-Only Logic (No Firebase) -->
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const phoneNumberInput = document.getElementById('phone-number');
+        const loginButton = document.getElementById('login-button');
+        const signUpButton = document.getElementById('sign-up-button');
+        const messageBox = document.getElementById('message-box');
+
+        function showMessage(text, type = 'info') {
+            messageBox.textContent = text;
+            messageBox.className = 'text-center p-3 rounded-lg mt-4 text-sm font-medium';
+            messageBox.classList.remove('hidden');
+
+            switch (type) {
+                case 'success':
+                    messageBox.classList.add('bg-green-100', 'text-green-800');
+                    break;
+                case 'error':
+                    messageBox.classList.add('bg-red-100', 'text-red-800');
+                    break;
+                default:
+                    messageBox.classList.add('bg-blue-100', 'text-blue-800');
+            }
+        }
+
+        // UI-only fake login → go to otp.html
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const phone = phoneNumberInput.value.trim();
+
+            if (!phone) {
+                showMessage('Please enter your phone number.', 'error');
+                return;
+            }
+
+            showMessage('Simulated login. Redirecting to OTP...', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'otp.html';
+            }, 700);
+        });
+
+        // Sign Up → go to otp.html (same flow UI-only)
+        signUpButton.addEventListener('click', function () {
+            showMessage('Going to OTP to create new account...', 'info');
+            setTimeout(() => {
+                window.location.href = 'otp.html';
+            }, 500);
+        });
+
+        // Autofocus
+        window.addEventListener('load', () => {
+            phoneNumberInput.focus();
+        });
+    </script>
+</body>
+</html>
