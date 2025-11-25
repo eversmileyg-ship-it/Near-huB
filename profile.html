@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Setup (UI Only)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: "#4F46E5",
+                        "primary-dark": "#4338CA",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F5F5F5;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1),
+                        0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .image-box {
+            border: 2px dashed #9CA3AF;
+            background: #F9FAFB;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .image-box:hover {
+            border-color: #4F46E5;
+        }
+
+        .btn-continue {
+            background-color: #4F46E5;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-continue:disabled {
+            background-color: #9CA3AF;
+        }
+    </style>
+</head>
+
+<body class="font-sans flex justify-center p-4">
+
+<div class="glass-card max-w-lg w-full p-6 sm:p-8 my-8">
+
+    <!-- HEADER -->
+    <div class="text-center mb-6">
+        <span class="text-sm font-semibold text-primary">STEP 2 OF 3</span>
+        <h1 class="text-3xl font-bold text-gray-900 mt-1">Set Up Your Profile</h1>
+        <p class="text-gray-600 mt-1">Complete your required details.</p>
+    </div>
+
+    <form id="profileForm" class="space-y-6">
+
+        <!-- PROFILE PHOTO -->
+        <div class="flex items-center space-x-4 pb-4 border-b">
+            <div class="relative w-20 h-20">
+                <img id="profileImg" src="https://placehold.co/80x80/d1d5db/4B5563?text=Photo"
+                     class="rounded-full w-full h-full object-cover border-2 border-gray-500 shadow-md">
+
+                <label for="profileUpload"
+                       class="absolute bottom-0 right-0 bg-gray-700 text-white rounded-full p-1 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
+                         viewBox="0 0 20 20">
+                        <path d="M11.5 2a1.5 1.5 0 01.95.342L13.6 3.3a1.5 1.5 0 001.101.45H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V5.75A2.75 2.75 0 014.75 3h1.195a1.5 1.5 0 001.102-.45l1.15-1.08A1.5 1.5 0 018.15 2h3.35z"/>
+                    </svg>
+                </label>
+                <input type="file" id="profileUpload" class="hidden" accept="image/*">
+            </div>
+
+            <div>
+                <p class="font-semibold text-gray-900">Profile Photo</p>
+                <p class="text-sm text-gray-500">Add a clear photo</p>
+            </div>
+        </div>
+
+        <!-- FULL NAME -->
+        <div>
+            <label class="text-sm font-medium text-gray-700">Full Name</label>
+            <input id="fullName" type="text" required
+                   class="w-full mt-1 px-4 py-3 border rounded-lg shadow-sm focus:border-primary">
+        </div>
+
+        <!-- ID TYPE -->
+        <div>
+            <label class="text-sm font-medium text-gray-700">ID Type</label>
+            <select id="idType"
+                    class="w-full mt-1 px-4 py-3 border rounded-lg shadow-sm bg-white focus:border-primary" required>
+                <option value="" disabled selected>Select ID Type</option>
+                <option value="nrc">NRC</option>
+                <option value="driving">Driving License</option>
+            </select>
+        </div>
+
+        <!-- ID NUMBER -->
+        <div>
+            <label class="text-sm font-medium text-gray-700">ID Number</label>
+            <input id="idNumber" type="text" required
+                   class="w-full mt-1 px-4 py-3 border rounded-lg shadow-sm focus:border-primary">
+        </div>
+
+        <!-- ID FRONT/BACK -->
+        <div class="border-t pt-4">
+            <p class="text-sm font-medium text-gray-700 mb-2">Upload ID Photos</p>
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <label class="image-box h-24 flex flex-col items-center justify-center rounded-lg" for="idFront">
+                    <p class="text-xs text-gray-500">Front Side</p>
+                    <span id="frontStatus" class="text-xs text-gray-400">Required</span>
+                </label>
+                <input type="file" id="idFront" class="hidden" accept="image/*">
+
+                <label class="image-box h-24 flex flex-col items-center justify-center rounded-lg" for="idBack">
+                    <p class="text-xs text-gray-500">Back Side</p>
+                    <span id="backStatus" class="text-xs text-gray-400">Required</span>
+                </label>
+                <input type="file" id="idBack" class="hidden" accept="image/*">
+
+            </div>
+        </div>
+
+        <!-- FACE VERIFY -->
+        <div class="bg-slate-50 border p-4 rounded-xl flex justify-between items-center shadow-inner">
+            <div>
+                <p class="font-semibold text-gray-800">Face ID Verification</p>
+                <p id="faceStatus" class="text-xs text-red-500">Not Verified</p>
+            </div>
+
+            <button type="button" id="faceBtn"
+                    class="bg-gray-500 text-white px-4 py-2 rounded-lg text-sm">
+                Start
+            </button>
+        </div>
+
+        <!-- LOCATION -->
+        <div class="border-t pt-4">
+            <div class="flex justify-between items-center">
+                <p class="font-semibold text-gray-800">Allow Location Access</p>
+                <input type="checkbox" id="locToggle">
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Helps to show nearby shops</p>
+        </div>
+
+        <!-- CONTINUE -->
+        <button id="continueBtn" disabled class="btn-continue w-full py-3 rounded-lg text-xl">
+            Continue
+        </button>
+
+    </form>
+</div>
+
+<script>
+    const profileState = {
+        photo: false,
+        name: false,
+        idType: false,
+        idNumber: false,
+        front: false,
+        back: false,
+        face: false
+    };
+
+    const continueBtn = document.getElementById("continueBtn");
+
+    function checkComplete() {
+        const ok = Object.values(profileState).every(v => v === true);
+        continueBtn.disabled = !ok;
+    }
+
+    // Profile Photo preview
+    document.getElementById("profileUpload").addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (file) {
+            document.getElementById("profileImg").src = URL.createObjectURL(file);
+            profileState.photo = true;
+            checkComplete();
+        }
+    });
+
+    // Name
+    document.getElementById("fullName").addEventListener("input", e => {
+        profileState.name = e.target.value.trim().length > 0;
+        checkComplete();
+    });
+
+    // ID Type
+    document.getElementById("idType").addEventListener("change", e => {
+        profileState.idType = true;
+        checkComplete();
+    });
+
+    // ID Number
+    document.getElementById("idNumber").addEventListener("input", e => {
+        profileState.idNumber = e.target.value.trim().length > 0;
+        checkComplete();
+    });
+
+    // ID Front
+    document.getElementById("idFront").addEventListener("change", () => {
+        document.getElementById("frontStatus").textContent = "Uploaded";
+        document.getElementById("frontStatus").classList.add("text-green-500");
+        profileState.front = true;
+        checkComplete();
+    });
+
+    // ID Back
+    document.getElementById("idBack").addEventListener("change", () => {
+        document.getElementById("backStatus").textContent = "Uploaded";
+        document.getElementById("backStatus").classList.add("text-green-500");
+        profileState.back = true;
+        checkComplete();
+    });
+
+    // Face Verify Simulation
+    document.getElementById("faceBtn").addEventListener("click", () => {
+        const btn = document.getElementById("faceBtn");
+        const status = document.getElementById("faceStatus");
+
+        btn.disabled = true;
+        btn.textContent = "Checking...";
+        status.textContent = "Processing...";
+        status.classList.remove("text-red-500");
+        status.classList.add("text-blue-500");
+
+        setTimeout(() => {
+            status.textContent = "Verified ✓";
+            status.classList.remove("text-blue-500");
+            status.classList.add("text-green-600");
+            btn.textContent = "Done";
+            profileState.face = true;
+            checkComplete();
+        }, 1500);
+    });
+
+    // Continue → face.html
+    continueBtn.addEventListener("click", () => {
+        window.location.href = "face.html";
+    });
+</script>
+
+</body>
+</html>
